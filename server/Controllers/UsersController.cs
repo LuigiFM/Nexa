@@ -31,6 +31,7 @@ namespace Nexa.Server.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            
             }
             if (_context.Users.Any(u => u.Username == user.Username || u.Email == user.Email))
             {

@@ -37,8 +37,14 @@ window.authApi = (() => {
 
   async function request(path, options = {}) {
     let response;
+    const normalizedPath = path.startsWith("/")
+      ? path
+      : path.includes("/") || path.startsWith("Dashboard") || path.startsWith("AI")
+        ? `/${path}`
+        : `/Users/${path}`;
+
     try {
-      response = await fetch(`${baseUrl}/Users/${path}`, {
+      response = await fetch(`${baseUrl}${normalizedPath}`, {
         ...options,
         credentials: "include",
         headers: {
