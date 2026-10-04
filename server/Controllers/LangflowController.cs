@@ -23,13 +23,13 @@ namespace Nexa.Server.Controllers
     private readonly HttpClient _httpclient;
     private readonly string? _apiKey;
     private readonly AppDbContext _dbContext;
-    private readonly Methods.Methods _methods;
-    public LangflowController(HttpClient httpClient, AppDbContext dbContext)
+    private readonly LangFlowService _langFlowService;
+    public LangflowController(HttpClient httpClient, AppDbContext dbContext, LangFlowService langFlowService)
     {
             _httpclient = httpClient;
             _apiKey = Environment.GetEnvironmentVariable("LANGFLOW-API-KEY");
             _dbContext = dbContext;
-            _methods = new Methods.Methods();
+            _langFlowService = langFlowService;
     }
 
     [HttpPost("send-message")]
@@ -47,7 +47,7 @@ namespace Nexa.Server.Controllers
                 return BadRequest();
             }
 
-           string message = await _methods.SendMessageAsync(payloadMessage);
+           string message = await _langFlowService.SendMessageAsync(payloadMessage);
 
             if(String.IsNullOrEmpty(message))
             {

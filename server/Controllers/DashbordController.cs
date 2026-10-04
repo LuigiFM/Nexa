@@ -16,11 +16,11 @@ namespace server.Controllers
     public class DashbordController : ControllerBase
     {
         private readonly AppDbContext _dbContext;
-        private readonly Methods _methods;
-        public DashbordController(AppDbContext dbContext)
+        private readonly LangFlowService _langFlowService;
+        public DashbordController(AppDbContext dbContext, LangFlowService langFlowService)
         {
             _dbContext = dbContext;
-            _methods = new Methods();
+            _langFlowService = langFlowService;
         }
         [HttpPost("question")]
         public async Task<IActionResult> Question([FromBody] StudyMessage studyMessage)
@@ -47,7 +47,7 @@ namespace server.Controllers
             string message = $"Você é um tutor de estudos do Nexa. Usuário: {username}\nMatéria: {studyMessage.Context.Subject}\nTarefa atual: {studyMessage.Context.CurrentTask}\nPergunta: {studyMessage.Message}";
 
 
-            string answer = await _methods.SendMessageAsync(message);
+            string answer = await _langFlowService.SendMessageAsync(message);
             
             return Ok(answer);
         }

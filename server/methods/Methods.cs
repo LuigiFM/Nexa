@@ -3,9 +3,13 @@ using Newtonsoft.Json.Linq;
 
 namespace Nexa.Server.Methods
 {
-    public class Methods
+    public class LangFlowService
     {
-        
+        private readonly HttpClient _httpClient;
+        public LangFlowService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
         async public Task<string> SendMessageAsync(string msg)
         {
             string? _apiKey = Environment.GetEnvironmentVariable("LANGFLOW-API-KEY");
@@ -15,7 +19,6 @@ namespace Nexa.Server.Methods
                 return "";
             }
 
-            HttpClient _httpclient = new HttpClient();
 
             string url = "http://localhost:7860/api/v1/run/5467023e-20cd-4394-ab06-7cf4641757dc";
 
@@ -34,7 +37,7 @@ namespace Nexa.Server.Methods
             request.Headers.Add("x-api-key", _apiKey);
             request.Content = JsonContent.Create(requestPayload);
 
-            var response = await _httpclient.SendAsync(request);
+            var response = await _httpClient.SendAsync(request);
 
             string content = await response.Content.ReadAsStringAsync();
 

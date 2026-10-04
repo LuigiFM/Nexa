@@ -3,6 +3,7 @@ using Nexa.Server.DatabaseContext;
 using Nexa.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
+using Nexa.Server.Methods;
 using DotNetEnv;
 
 Env.Load();
@@ -30,15 +31,15 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDistributedMemoryCache();
 
-builder.Services.AddHttpClient();
-
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("database"));
 
+builder.Services.AddHttpClient<LangFlowService>();
 builder.Services.AddScoped<PasswordHasher<User>>();
+builder.Services.AddScoped<LangFlowService>();
 
 
 
