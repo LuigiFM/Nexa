@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
 using System.Text.Json;
-using Nexa.Server.Methods;
+using Nexa.Server.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 namespace Nexa.Server.Controllers
 {
@@ -19,42 +19,38 @@ namespace Nexa.Server.Controllers
     [Route("AI")]
     public class LangflowController : ControllerBase
     {
-
-    private readonly HttpClient _httpclient;
-    private readonly string? _apiKey;
     private readonly AppDbContext _dbContext;
     private readonly LangFlowService _langFlowService;
-    public LangflowController(HttpClient httpClient, AppDbContext dbContext, LangFlowService langFlowService)
+    public LangflowController(AppDbContext dbContext, LangFlowService langFlowService)
     {
-            _httpclient = httpClient;
-            _apiKey = Environment.GetEnvironmentVariable("LANGFLOW-API-KEY");
             _dbContext = dbContext;
             _langFlowService = langFlowService;
     }
 
     [HttpPost("send-message")]
-    public async Task<IActionResult> SendMessage([FromBody] JsonObject payload)
+    public async Task<IActionResult> SendMessage([FromBody] JsonObject? payload)
         {
-            if(!payload.ContainsKey("input_value"))
-            {
-                return BadRequest();
-            }
-           
-           string? payloadMessage = payload["input_value"]?.ToString();
 
-           if(String.IsNullOrEmpty(payloadMessage))
+
+            if (payload is null || !payload.TryGetPropertyValue("input_value", out var inputValue) || inputValue is null)
             {
                 return BadRequest();
             }
 
-           string message = await _langFlowService.SendMessageAsync(payloadMessage);
+            string? payloadMessage = inputValue.ToString();
 
-            if(String.IsNullOrEmpty(message))
+            if (string.IsNullOrWhiteSpace(payloadMessage))
+            {
+                return BadRequest();
+            }
+
+            string message = await _langFlowService.SendMessageAsync(payloadMessage);
+
+            if (string.IsNullOrEmpty(message))
             {
                 return StatusCode(500);
             }
 
-            
             return Ok(message);
         } 
     

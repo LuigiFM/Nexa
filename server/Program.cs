@@ -3,7 +3,7 @@ using Nexa.Server.DatabaseContext;
 using Nexa.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
-using Nexa.Server.Methods;
+using Nexa.Server.Services;
 using DotNetEnv;
 
 Env.Load();
@@ -39,8 +39,6 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDataba
 
 builder.Services.AddHttpClient<LangFlowService>();
 builder.Services.AddScoped<PasswordHasher<User>>();
-builder.Services.AddScoped<LangFlowService>();
-
 
 
 

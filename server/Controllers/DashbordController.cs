@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Nexa.Server.DatabaseContext;
 using Nexa.Server.Models;
-using Nexa.Server.Methods;
+using Nexa.Server.Services;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 
@@ -25,10 +25,7 @@ namespace server.Controllers
         [HttpPost("question")]
         public async Task<IActionResult> Question([FromBody] StudyMessage studyMessage)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+    
 
             if(!Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userguid))
             {
@@ -41,6 +38,7 @@ namespace server.Controllers
             {
                 return Unauthorized();
             }
+
 
             string username = user.Username;
             

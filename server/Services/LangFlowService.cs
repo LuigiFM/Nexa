@@ -1,7 +1,7 @@
 using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 
-namespace Nexa.Server.Methods
+namespace Nexa.Server.Services
 {
     public class LangFlowService
     {
@@ -16,7 +16,7 @@ namespace Nexa.Server.Methods
 
             if(String.IsNullOrEmpty(_apiKey))
             {
-                return "";
+                throw new InvalidOperationException("NO API KEY");
             }
 
 
@@ -39,11 +39,15 @@ namespace Nexa.Server.Methods
 
             var response = await _httpClient.SendAsync(request);
 
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException();
+            }
             string content = await response.Content.ReadAsStringAsync();
 
             if (string.IsNullOrWhiteSpace(content))
             {
-                return "";
+                throw new InvalidOperationException();
             }
 
 
