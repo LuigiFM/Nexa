@@ -38,6 +38,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("database"));
 
 builder.Services.AddHttpClient<LangFlowService>();
+builder.Services.AddHttpClient<GeminiService>();
 builder.Services.AddScoped<PasswordHasher<User>>();
 
 

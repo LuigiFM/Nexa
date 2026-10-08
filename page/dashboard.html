@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f6f7fb" />
+    <meta name="theme-color" content="#f4f5f6" />
     <meta name="description" content="Seu espaço de estudos com IA no Nexa." />
     <title>Dashboard · Nexa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,10 +29,10 @@
         </a>
 
         <nav class="top-nav" aria-label="Navegação principal">
-          <a class="nav-link is-active" href="./dashboard.html">Dashboard</a>
-          <a class="nav-link" href="#">Tutor IA</a>
-          <a class="nav-link" href="#">Materiais</a>
-          <a class="nav-link" href="#">Progresso</a>
+          <a class="nav-link is-active" href="#dashboard" aria-current="page">Dashboard</a>
+          <a class="nav-link" href="#tutor">Tutor IA</a>
+          <a class="nav-link" href="#materials">Materiais</a>
+          <a class="nav-link" href="#progress">Progresso</a>
         </nav>
 
         <div class="user-menu" aria-label="Menu do usuário">
@@ -50,7 +50,7 @@
       </header>
 
       <main class="dashboard-main">
-        <section class="welcome-card" aria-labelledby="welcome-title">
+        <section class="welcome-card" id="dashboard" aria-labelledby="welcome-title">
           <div class="welcome-copy">
             <span class="eyebrow"><span class="status-dot"></span> SESSÃO ATIVA</span>
             <p class="greeting">ESTUDE COM IA</p>
@@ -63,15 +63,15 @@
           <div class="hero-stats" aria-label="Resumo do seu estudo">
             <div class="stat-pill">
               <span class="stat-label">Foco hoje</span>
-              <strong>2h 40m</strong>
+              <strong id="focus-today-value">—</strong>
             </div>
             <div class="stat-pill">
               <span class="stat-label">Meta semanal</span>
-              <strong>5/7</strong>
+              <strong id="weekly-goal-value">—</strong>
             </div>
             <div class="stat-pill">
               <span class="stat-label">Streak</span>
-              <strong>14 dias</strong>
+              <strong id="streak-value">—</strong>
             </div>
           </div>
 
@@ -114,49 +114,37 @@
           <div class="panel">
             <div class="section-heading">
               <div>
-                <span class="section-kicker">PLANO DO DIA</span>
+                <span class="section-kicker">TAREFAS</span>
                 <h2>Rotina de estudo</h2>
               </div>
-              <span class="method-badge">Hoje</span>
+              <span class="method-badge" id="task-count">Carregando...</span>
             </div>
 
-            <ul class="study-plan" aria-label="Lista de tarefas de estudo">
-              <li class="plan-item">
-                <span class="plan-index">01</span>
-                <div class="plan-copy">
-                  <strong>Revisar álgebra</strong>
-                  <span>30 min · 9 exercícios</span>
-                </div>
-                <span class="plan-state done">Concluído</span>
-              </li>
-              <li class="plan-item">
-                <span class="plan-index">02</span>
-                <div class="plan-copy">
-                  <strong>Resumo de biologia</strong>
-                  <span>25 min · 4 tópicos</span>
-                </div>
-                <span class="plan-state done">Concluído</span>
-              </li>
-              <li class="plan-item">
-                <span class="plan-index">03</span>
-                <div class="plan-copy">
-                  <strong>Quiz de história</strong>
-                  <span>20 min · 8 perguntas</span>
-                </div>
-                <span class="plan-state pending">Em curso</span>
-              </li>
-              <li class="plan-item">
-                <span class="plan-index">04</span>
-                <div class="plan-copy">
-                  <strong>Flashcards de química</strong>
-                  <span>15 min · revisão</span>
-                </div>
-                <span class="plan-state upcoming">Próximo</span>
+            <ul class="study-plan" id="study-plan" aria-label="Lista de tarefas de estudo" aria-live="polite">
+              <li class="list-empty-state">
+                Carregando tarefas...
               </li>
             </ul>
+
+            <form class="study-entry-form" id="task-form">
+              <h3>Adicionar tarefa</h3>
+              <label>
+                Título
+                <input id="task-title" name="title" type="text" maxlength="120" required />
+              </label>
+              <label>
+                Matéria
+                <input id="task-subject" name="subject" type="text" maxlength="80" required />
+              </label>
+              <label>
+                Duração planejada (minutos)
+                <input id="task-duration" name="durationMinutes" type="number" min="1" max="1440" value="20" required />
+              </label>
+              <button type="submit" id="task-submit">Adicionar tarefa</button>
+            </form>
           </div>
 
-          <aside class="panel">
+          <aside class="panel" id="progress">
             <div class="section-heading compact">
               <div>
                 <span class="section-kicker">PROGRESSO</span>
@@ -164,27 +152,27 @@
               </div>
             </div>
 
-            <div class="progress-ring" aria-label="Progresso geral 72%">
+            <div class="progress-ring" id="progress-ring" aria-label="Progresso ainda não disponível">
               <div class="ring-core">
-                <span>72%</span>
+                <span id="progress-value">—</span>
               </div>
             </div>
 
             <div class="progress-meta">
               <div>
-                <span class="meta-label">Matérias</span>
-                <strong>6 em 8</strong>
+                <span class="meta-label">Tarefas</span>
+                <strong id="progress-task-count">—</strong>
               </div>
               <div>
-                <span class="meta-label">Sessões</span>
-                <strong>18</strong>
+                <span class="meta-label">Materiais</span>
+                <strong id="progress-material-count">—</strong>
               </div>
             </div>
           </aside>
         </section>
 
         <section class="lower-grid" aria-label="Assistente IA e materiais">
-          <div class="panel ai-panel">
+          <div class="panel ai-panel" id="tutor">
             <div class="section-heading">
               <div>
                 <span class="section-kicker">ASSISTENTE IA</span>
@@ -216,47 +204,49 @@
             </form>
           </div>
 
-          <div class="panel material-panel">
+          <div class="panel material-panel" id="materials">
             <div class="section-heading">
               <div>
                 <span class="section-kicker">MATERIAIS</span>
                 <h2>Para revisar</h2>
               </div>
-              <span class="method-badge">5 itens</span>
+              <span class="method-badge" id="material-count">Carregando...</span>
             </div>
 
-            <ul class="material-list" aria-label="Materiais de estudo">
-              <li>
-                <span class="material-bullet"></span>
-                <span>Resumo de termos-chave em química</span>
-              </li>
-              <li>
-                <span class="material-bullet"></span>
-                <span>Notas de revisão de literatura</span>
-              </li>
-              <li>
-                <span class="material-bullet"></span>
-                <span>Lista de exercícios de matemática</span>
-              </li>
-              <li>
-                <span class="material-bullet"></span>
-                <span>Mapa mental sobre o ciclo celular</span>
-              </li>
-              <li>
-                <span class="material-bullet"></span>
-                <span>Planejamento da próxima semana</span>
+            <ul class="material-list" id="material-list" aria-label="Materiais de estudo" aria-live="polite">
+              <li class="list-empty-state">
+                Carregando materiais...
               </li>
             </ul>
+
+            <form class="study-entry-form" id="material-form">
+              <h3>Adicionar material</h3>
+              <label>
+                Título
+                <input id="material-title" name="title" type="text" maxlength="120" required />
+              </label>
+              <label>
+                Tipo
+                <select id="material-type" name="type" required>
+                  <option value="">Selecione o tipo</option>
+                  <option value="Resumo">Resumo</option>
+                  <option value="Anotações">Anotações</option>
+                  <option value="PDF">PDF</option>
+                  <option value="Link">Link</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </label>
+              <button type="submit" id="material-submit">Adicionar material</button>
+            </form>
           </div>
         </section>
 
         <section class="account-section" aria-labelledby="account-title">
           <div class="section-heading">
             <div>
-              <span class="section-kicker">SEUS DADOS</span>
-              <h2 id="account-title">Informações da conta</h2>
+              <span class="section-kicker">PERFIL</span>
+              <h2 id="account-title">Dados da conta</h2>
             </div>
-            <span class="api-badge"><span></span> Sincronizado com a API</span>
           </div>
 
           <div class="account-card" id="account-card" aria-live="polite">
@@ -286,31 +276,8 @@
                   <strong id="account-email">—</strong>
                 </span>
               </article>
-              <article class="detail-item">
-                <span class="detail-icon id-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="1.7" />
-                    <path d="M8 9h8M8 12h8M8 15h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-                  </svg>
-                </span>
-                <span class="detail-copy">
-                  <span class="detail-label">Identificador</span>
-                  <strong class="account-id" id="account-id">—</strong>
-                </span>
-              </article>
             </div>
           </div>
-        </section>
-
-        <section class="response-section" aria-labelledby="response-title">
-          <div class="section-heading">
-            <div>
-              <span class="section-kicker">RESPOSTA DO SERVIDOR</span>
-              <h2 id="response-title">Retorno da API</h2>
-            </div>
-            <span class="method-badge">GET /Users/me</span>
-          </div>
-          <pre class="response-card" id="api-response" aria-live="polite">Aguardando resposta...</pre>
         </section>
 
         <div class="dashboard-notice" id="dashboard-notice" role="alert" hidden></div>

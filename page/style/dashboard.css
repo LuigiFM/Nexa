@@ -1,23 +1,26 @@
 :root {
   color-scheme: light;
   font-family: "DM Sans", sans-serif;
-  color: #202235;
-  background: #f6f7fb;
+  color: #202a35;
+  background: #f4f5f6;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-optical-sizing: auto;
-  --violet: #6555df;
-  --violet-deep: #2c1f57;
-  --violet-soft: #f3f0ff;
-  --muted: #82849a;
-  --line: #e7e8ef;
+  --accent: #475569;
+  --accent-soft: #f1f3f5;
+  --muted: #737d89;
+  --line: #e2e5e8;
   --card-bg: #ffffff;
   --success: #2a905d;
   --success-soft: #eaf8f2;
   --warning: #b87a1c;
   --warning-soft: #fff7ea;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 * {
@@ -30,8 +33,8 @@ body {
   margin: 0;
   padding: 0 24px;
   background:
-    radial-gradient(ellipse at 85% 0, rgba(101, 85, 223, 0.07), transparent 34%),
-    #f6f7fb;
+    radial-gradient(ellipse at 85% 0, rgba(71, 85, 105, 0.05), transparent 34%),
+    #f4f5f6;
 }
 
 button,
@@ -77,7 +80,7 @@ button {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.8);
-  color: #403d59;
+  color: #374151;
   font-size: 12px;
   font-weight: 700;
 }
@@ -88,7 +91,7 @@ button {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6f5ce3, #8b7af9);
+  background: linear-gradient(135deg, #475569, #64748b);
   color: #fff;
   font-size: 10px;
 }
@@ -97,7 +100,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #28233f;
+  color: #202a35;
   font-family: "Manrope", sans-serif;
   font-size: 23px;
   font-weight: 800;
@@ -112,8 +115,8 @@ button {
   place-items: center;
   border-radius: 12px;
   color: #fff;
-  background: var(--violet);
-  box-shadow: 0 6px 14px rgba(101, 85, 223, 0.19);
+  background: var(--accent);
+  box-shadow: 0 6px 14px rgba(51, 65, 85, 0.16);
 }
 
 .brand-mark svg {
@@ -122,7 +125,7 @@ button {
 }
 
 .brand-period {
-  color: var(--violet);
+  color: var(--accent);
 }
 
 .top-nav {
@@ -143,7 +146,7 @@ button {
   min-height: 34px;
   padding: 0 14px;
   border-radius: 999px;
-  color: #686b82;
+  color: #596575;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -154,8 +157,8 @@ button {
 
 .nav-link.is-active,
 .nav-link:hover {
-  color: var(--violet);
-  background: var(--violet-soft);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .logout-button {
@@ -175,9 +178,9 @@ button {
 }
 
 .logout-button:hover {
-  border-color: #d7d2fa;
-  color: var(--violet);
-  background: #faf9ff;
+  border-color: #cbd2d9;
+  color: var(--accent);
+  background: #f8f9fa;
 }
 
 .logout-button:disabled {
@@ -195,6 +198,13 @@ button {
   padding: 40px 0 42px;
 }
 
+#dashboard,
+#tutor,
+#materials,
+#progress {
+  scroll-margin-top: 24px;
+}
+
 .welcome-card {
   position: relative;
   min-height: 220px;
@@ -203,9 +213,9 @@ button {
   border-radius: 22px;
   color: #fff;
   background:
-    radial-gradient(ellipse at 85% 120%, rgba(124, 107, 240, 0.38), transparent 38%),
-    linear-gradient(120deg, #24203f 0%, #322b61 57%, #483e89 100%);
-  box-shadow: 0 18px 42px rgba(38, 38, 72, 0.14);
+    radial-gradient(ellipse at 85% 120%, rgba(148, 163, 184, 0.18), transparent 38%),
+    linear-gradient(120deg, #202a35 0%, #303b49 57%, #475569 100%);
+  box-shadow: 0 18px 42px rgba(31, 41, 55, 0.12);
 }
 
 .welcome-copy {
@@ -218,7 +228,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #d1ccf5;
+  color: #d8dee5;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.35px;
@@ -234,7 +244,7 @@ button {
 
 .greeting {
   margin: 24px 0 7px;
-  color: #aaa5d4;
+  color: #b8c1cb;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.4px;
@@ -337,9 +347,9 @@ button {
 .feature-card.primary {
   color: #fff;
   background:
-    radial-gradient(circle at top right, rgba(109, 95, 233, 0.65), transparent 28%),
-    linear-gradient(135deg, #221c41 0%, #3d2d7f 100%);
-  border-color: rgba(129, 115, 255, 0.35);
+    radial-gradient(circle at top right, rgba(148, 163, 184, 0.18), transparent 28%),
+    linear-gradient(135deg, #27313d 0%, #3f4b59 100%);
+  border-color: rgba(148, 163, 184, 0.26);
 }
 
 .feature-tag {
@@ -347,8 +357,8 @@ button {
   align-self: flex-start;
   padding: 7px 10px;
   border-radius: 999px;
-  background: #f3f0ff;
-  color: var(--violet);
+  background: #f1f3f5;
+  color: var(--accent);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -357,7 +367,7 @@ button {
 
 .feature-card.primary .feature-tag {
   background: rgba(255, 255, 255, 0.12);
-  color: #e8e2ff;
+  color: #e2e8ee;
 }
 
 .feature-card h3 {
@@ -370,7 +380,7 @@ button {
 
 .feature-card p {
   margin: 0;
-  color: #666c8b;
+  color: #66717e;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -386,8 +396,8 @@ button {
   padding: 0 12px;
   border: 0;
   border-radius: 10px;
-  background: #f3f0ff;
-  color: var(--violet);
+  background: #f1f3f5;
+  color: var(--accent);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -408,7 +418,7 @@ button {
 
 .panel {
   padding: 22px;
-  border: 1px solid #e9eaf2;
+  border: 1px solid #e4e7ea;
   border-radius: 20px;
   background: var(--card-bg);
   box-shadow: 0 12px 26px rgba(26, 27, 52, 0.025);
@@ -427,7 +437,7 @@ button {
 }
 
 .section-kicker {
-  color: var(--violet);
+  color: var(--accent);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.35px;
@@ -447,10 +457,10 @@ button {
   align-items: center;
   gap: 8px;
   padding: 0 10px;
-  border: 1px solid #e5e1fb;
+  border: 1px solid #e2e5e8;
   border-radius: 20px;
-  color: #675cbc;
-  background: #f4f2ff;
+  color: #566273;
+  background: #f2f4f6;
   font-size: 10px;
   white-space: nowrap;
 }
@@ -469,9 +479,9 @@ button {
   align-items: center;
   gap: 14px;
   padding: 14px 12px;
-  border: 1px solid #eef0f7;
+  border: 1px solid #e9ecef;
   border-radius: 14px;
-  background: #fcfbff;
+  background: #fafbfc;
 }
 
 .plan-index {
@@ -480,8 +490,8 @@ button {
   width: 32px;
   height: 32px;
   border-radius: 10px;
-  background: #f3f0ff;
-  color: var(--violet);
+  background: #eef1f4;
+  color: var(--accent);
   font-size: 10px;
   font-weight: 700;
 }
@@ -492,7 +502,7 @@ button {
 }
 
 .plan-copy strong {
-  color: #2d2f45;
+  color: #2b3440;
   font-size: 13px;
 }
 
@@ -525,8 +535,8 @@ button {
 }
 
 .plan-state.upcoming {
-  background: #f4f2ff;
-  color: #6c5dd2;
+  background: #f0f2f4;
+  color: #586575;
 }
 
 .progress-ring {
@@ -536,8 +546,8 @@ button {
   height: 158px;
   margin: 18px auto 16px;
   border-radius: 50%;
-  background: conic-gradient(var(--violet) 0 72%, #efeef8 72% 100%);
-  box-shadow: inset 0 0 0 1px rgba(101, 85, 223, 0.08);
+  background: conic-gradient(#dce1e5 0 100%);
+  box-shadow: inset 0 0 0 1px rgba(71, 85, 105, 0.08);
 }
 
 .ring-core {
@@ -547,11 +557,11 @@ button {
   height: 112px;
   border-radius: 50%;
   background: #fff;
-  border: 1px solid #eef0f7;
+  border: 1px solid #e9ecef;
 }
 
 .ring-core span {
-  color: #2a2242;
+  color: #26313d;
   font-family: "Manrope", sans-serif;
   font-size: 23px;
   font-weight: 800;
@@ -578,7 +588,7 @@ button {
 .progress-meta strong {
   display: block;
   margin-top: 6px;
-  color: #2c2e42;
+  color: #2b3440;
   font-size: 17px;
 }
 
@@ -606,16 +616,16 @@ button {
 }
 
 .message-bot {
-  border: 1px solid #eee8ff;
-  background: #f7f4ff;
-  color: #41396e;
+  border: 1px solid #e5e8eb;
+  background: #f5f6f7;
+  color: #384452;
 }
 
 .message-user {
   justify-self: end;
-  background: linear-gradient(135deg, #34285d 0%, #5844a7 100%);
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
   color: #fff;
-  box-shadow: 0 10px 20px rgba(76, 59, 160, 0.18);
+  box-shadow: 0 10px 20px rgba(51, 65, 85, 0.14);
 }
 
 .chat-context {
@@ -639,8 +649,8 @@ button {
   padding: 0 11px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: #fafaff;
-  color: #2c2e42;
+  background: #fafbfc;
+  color: #2b3440;
   font-size: 12px;
 }
 
@@ -656,8 +666,8 @@ button {
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: #fafaff;
-  color: #2c2e42;
+  background: #fafbfc;
+  color: #2b3440;
 }
 
 .prompt-box button {
@@ -665,7 +675,7 @@ button {
   padding: 0 16px;
   border: 0;
   border-radius: 12px;
-  background: var(--violet);
+  background: var(--accent);
   color: #fff;
   font-weight: 700;
 }
@@ -689,12 +699,83 @@ button {
   align-items: center;
   gap: 10px;
   padding: 12px 12px;
-  border: 1px solid #eef0f7;
+  border: 1px solid #e9ecef;
   border-radius: 12px;
-  background: #fafaff;
-  color: #413d5a;
+  background: #fafbfc;
+  color: #384452;
   font-size: 12px;
   line-height: 1.5;
+}
+
+.material-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.material-copy small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.list-empty-state {
+  padding: 16px 12px;
+  border: 1px dashed #d8dde2;
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.study-entry-form {
+  display: grid;
+  gap: 11px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.study-entry-form h3 {
+  margin: 0;
+  color: #303b47;
+  font-size: 13px;
+}
+
+.study-entry-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.study-entry-form input,
+.study-entry-form select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fafbfc;
+  color: #2b3440;
+  font: inherit;
+  font-size: 12px;
+}
+
+.study-entry-form button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.study-entry-form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
 }
 
 .material-bullet {
@@ -702,18 +783,16 @@ button {
   height: 9px;
   flex: 0 0 auto;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7f6ef1 0%, #b09fff 100%);
-  box-shadow: 0 0 0 5px rgba(127, 110, 241, 0.1);
+  background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+  box-shadow: 0 0 0 5px rgba(100, 116, 139, 0.1);
 }
 
-.account-section,
-.response-section {
+.account-section {
   margin-top: 34px;
 }
 
-.account-card,
-.response-card {
-  border: 1px solid #e8e9f0;
+.account-card {
+  border: 1px solid #e4e7ea;
   border-radius: 15px;
   background: #fff;
   box-shadow: 0 7px 24px rgba(38, 38, 72, 0.035);
@@ -733,7 +812,7 @@ button {
 
 .account-details {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.35fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -759,18 +838,13 @@ button {
 }
 
 .user-icon {
-  color: #6555df;
-  background: #f0edff;
+  color: #475569;
+  background: #eef1f4;
 }
 
 .email-icon {
   color: #328f72;
   background: #eaf8f2;
-}
-
-.id-icon {
-  color: #bd7b35;
-  background: #fff4e8;
 }
 
 .detail-copy {
@@ -786,29 +860,11 @@ button {
 
 .detail-copy strong {
   overflow: hidden;
-  color: #34354a;
+  color: #303b47;
   font-size: 12px;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.detail-copy .account-id {
-  font-family: Consolas, "Courier New", monospace;
-  font-size: 10px;
-}
-
-.response-card {
-  min-height: 94px;
-  margin: 0;
-  padding: 18px 20px;
-  overflow-wrap: anywhere;
-  color: #504879;
-  background: #fbfaff;
-  font-family: Consolas, "Courier New", monospace;
-  font-size: 12px;
-  line-height: 1.7;
-  white-space: pre-wrap;
 }
 
 .dashboard-notice {
@@ -820,6 +876,12 @@ button {
   background: #fff6f5;
   font-size: 12px;
   line-height: 1.6;
+}
+
+.dashboard-notice[data-type="success"] {
+  border-color: #c9e0d2;
+  color: #28764a;
+  background: #f1f8f3;
 }
 
 .dashboard-footer {
@@ -834,7 +896,7 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(101, 85, 223, 0.36);
+  outline: 3px solid rgba(71, 85, 105, 0.35);
   outline-offset: 3px;
 }
 
@@ -869,7 +931,9 @@ button {
   .top-nav {
     order: 3;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: thin;
   }
 
   .chat-context {
@@ -915,7 +979,6 @@ button {
     padding: 18px;
   }
 
-  .response-section,
   .account-section {
     margin-top: 28px;
   }
@@ -944,7 +1007,6 @@ button {
     font-size: 17px;
   }
 
-  .api-badge,
   .method-badge {
     align-self: flex-start;
   }

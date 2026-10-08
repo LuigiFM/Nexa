@@ -26,41 +26,43 @@ namespace Nexa.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] User user)
+        public async Task<IActionResult> Register([FromBody] UserRegisterForm userForm)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            
-            }
-            if (_context.Users.Any(u => u.Username == user.Username || u.Email == user.Email))
+
+            if (_context.Users.Any(u => u.Username == userForm.Username || u.Email == userForm.Email))
             {
                 return Conflict("Usuário ou email já existe.");
             }
 
-            user.Password = _passwordHasher.HashPassword(user, user.Password);
+            User newUser = new()
+            {
+                Username = userForm.Username,
+                Email = userForm.Email
+            };
 
-            _context.Users.Add(user);
+            newUser.Password = _passwordHasher.HashPassword(newUser, userForm.Password);
+
+            _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User user)
+        public async Task<IActionResult> Login([FromBody] UserLoginForm loginForm)
         {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginForm.Username);
 
             if (existingUser == null)
             {
-                return NotFound("Usuário não encontrado.");
+                return NotFound("E-mail ou senha incorretos. Por favor, tente novamente.");
             }
 
-            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.Password, user.Password);
+            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.Password, loginForm.Password);
             
             if (passwordVerificationResult == PasswordVerificationResult.Failed)
             {
-                return Unauthorized("Credenciais inválidas.");
+                return Unauthorized("E-mail ou senha incorretos. Por favor, tente novamente.");
             }
 
             HttpContext.Session.SetString("UserId", existingUser.Id.ToString());
@@ -70,9 +72,21 @@ namespace Nexa.Server.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet("get-users")]
         public async Task<IActionResult> GetAllUsers()
         {
+            if(!Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userid))
+            {
+                return Unauthorized();
+            }
+
+            User? ClientUser = await _context.Users.FirstOrDefaultAsync<User>(u => u.Username == "admin");
+
+            if(ClientUser == null)
+            {
+                return Unauthorized();
+            }
+
             List<User> users = await _context.Users.ToListAsync();
 
             foreach (var user in users)

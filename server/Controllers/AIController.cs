@@ -17,14 +17,16 @@ namespace Nexa.Server.Controllers
 {
     [ApiController]
     [Route("AI")]
-    public class LangflowController : ControllerBase
+    public class AIController : ControllerBase
     {
     private readonly AppDbContext _dbContext;
     private readonly LangFlowService _langFlowService;
-    public LangflowController(AppDbContext dbContext, LangFlowService langFlowService)
+    private readonly GeminiService _geminiService;
+    public AIController(AppDbContext dbContext, LangFlowService langFlowService, GeminiService geminiService)
     {
             _dbContext = dbContext;
             _langFlowService = langFlowService;
+            _geminiService = geminiService;
     }
 
     [HttpPost("send-message")]
@@ -44,7 +46,7 @@ namespace Nexa.Server.Controllers
                 return BadRequest();
             }
 
-            string message = await _langFlowService.SendMessageAsync(payloadMessage);
+            string message = await _geminiService.SendMessageAsync(payloadMessage);
 
             if (string.IsNullOrEmpty(message))
             {

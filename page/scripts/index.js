@@ -109,8 +109,7 @@ loginForm.addEventListener("submit", async (event) => {
     const values = getFormValues(loginForm);
     await window.authApi.request("login", {
       method: "POST",
-      // A API valida EmailAddress no modelo User mesmo sem usar e-mail no login.
-      body: JSON.stringify({ ...values, email: "login@invalid.local" }),
+      body: JSON.stringify(values),
     });
     window.location.replace("./dashboard.html");
   } catch (error) {

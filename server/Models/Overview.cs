@@ -21,9 +21,9 @@ namespace Nexa.Server.Models
     }
 
     public class OverviewUser
-    {
+    { 
         [JsonPropertyName("id")]
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; } 
 
         [JsonPropertyName("username")]
         public string Username { get; set; } = string.Empty;
@@ -53,7 +53,7 @@ namespace Nexa.Server.Models
     public class OverviewTask
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;
@@ -71,7 +71,7 @@ namespace Nexa.Server.Models
     public class OverviewMaterial
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;

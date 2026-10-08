@@ -1,18 +1,18 @@
 :root {
   color-scheme: light;
   font-family: "DM Sans", sans-serif;
-  color: #202235;
-  background: #f6f7fb;
+  color: #202a35;
+  background: #f4f5f6;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-optical-sizing: auto;
   font-weight: 400;
-  --violet: #6555df;
-  --violet-dark: #5343ca;
-  --muted: #82849a;
-  --line: #e7e8ef;
+  --accent: #475569;
+  --accent-dark: #334155;
+  --muted: #737d89;
+  --line: #e2e5e8;
 }
 
 * {
@@ -47,7 +47,7 @@ a {
   border: 1px solid rgba(224, 226, 237, 0.8);
   border-radius: 28px;
   background: #fff;
-  box-shadow: 0 28px 90px rgba(38, 38, 72, 0.12);
+  box-shadow: 0 28px 90px rgba(31, 41, 55, 0.12);
 }
 
 .welcome-panel {
@@ -60,8 +60,8 @@ a {
   padding: 42px 44px;
   color: #fff;
   background:
-    radial-gradient(ellipse at 15% 95%, rgba(100, 76, 221, 0.42), transparent 44%),
-    linear-gradient(145deg, #24203f 0%, #322b61 54%, #483e89 100%);
+    radial-gradient(ellipse at 15% 95%, rgba(148, 163, 184, 0.18), transparent 44%),
+    linear-gradient(145deg, #202a35 0%, #303b49 54%, #475569 100%);
 }
 
 .brand,
@@ -97,7 +97,7 @@ a {
 }
 
 .brand-period {
-  color: #a99eff;
+  color: #cbd5e1;
 }
 
 .welcome-copy,
@@ -123,15 +123,15 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #c9c3f5;
+  color: #d8dee5;
 }
 
 .eyebrow-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #a99eff;
-  box-shadow: 0 0 14px rgba(169, 158, 255, 0.9);
+  background: #cbd5e1;
+  box-shadow: 0 0 14px rgba(203, 213, 225, 0.55);
 }
 
 .welcome-copy h1 {
@@ -144,7 +144,7 @@ a {
 }
 
 .welcome-copy h1 span {
-  color: #afa5ff;
+  color: #cbd5e1;
 }
 
 .welcome-copy p {
@@ -165,7 +165,7 @@ a {
 }
 
 .quote-mark {
-  color: #afa5ff;
+  color: #cbd5e1;
   font-family: Georgia, serif;
   font-size: 34px;
   line-height: 0.8;
@@ -179,7 +179,7 @@ a {
 }
 
 .quote-caption {
-  color: #aaa7c8;
+  color: #b8c1cb;
   font-size: 8px;
   letter-spacing: 1.2px;
 }
@@ -225,7 +225,7 @@ a {
 }
 
 .form-kicker {
-  color: var(--violet);
+  color: var(--accent);
   font-size: 9px;
 }
 
@@ -266,7 +266,7 @@ a {
 
 .tab-button:hover,
 .tab-button.is-active {
-  color: var(--violet);
+  color: var(--accent);
 }
 
 .tab-indicator {
@@ -276,7 +276,7 @@ a {
   width: 50%;
   height: 2px;
   border-radius: 4px;
-  background: var(--violet);
+  background: var(--accent);
   transition: transform 180ms ease;
 }
 
@@ -333,13 +333,13 @@ a {
 }
 
 .input-wrap input:hover {
-  border-color: #d1cee9;
+  border-color: #cbd2d9;
 }
 
 .input-wrap input:focus {
-  border-color: #897ce9;
+  border-color: #64748b;
   background: #fefeff;
-  box-shadow: 0 0 0 3px rgba(101, 85, 223, 0.11);
+  box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.12);
 }
 
 .password-toggle {
@@ -357,8 +357,8 @@ a {
 }
 
 .password-toggle:hover {
-  color: var(--violet);
-  background: #f4f2ff;
+  color: var(--accent);
+  background: #f1f3f5;
 }
 
 .password-toggle svg {
@@ -377,8 +377,8 @@ a {
   border: 0;
   border-radius: 10px;
   color: #fff;
-  background: linear-gradient(105deg, #6858df, #5849cf);
-  box-shadow: 0 8px 18px rgba(91, 74, 202, 0.2);
+  background: linear-gradient(105deg, #475569, #334155);
+  box-shadow: 0 8px 18px rgba(51, 65, 85, 0.18);
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
@@ -387,8 +387,8 @@ a {
 
 .submit-button:hover {
   transform: translateY(-1px);
-  background: linear-gradient(105deg, #7061e7, var(--violet-dark));
-  box-shadow: 0 10px 22px rgba(91, 74, 202, 0.26);
+  background: linear-gradient(105deg, #58677a, var(--accent-dark));
+  box-shadow: 0 10px 22px rgba(51, 65, 85, 0.22);
 }
 
 .submit-button:active {
@@ -408,10 +408,10 @@ a {
 .notice {
   margin: -9px 0 17px;
   padding: 11px 13px;
-  border: 1px solid #d9d4ff;
+  border: 1px solid #d7dde3;
   border-radius: 9px;
-  color: #5144ae;
-  background: #f5f3ff;
+  color: #475569;
+  background: #f3f5f6;
   font-size: 12px;
   line-height: 1.55;
 }
@@ -437,7 +437,7 @@ a {
 }
 
 .form-footer a {
-  color: #7166c7;
+  color: #475569;
   text-decoration: none;
 }
 
@@ -453,13 +453,13 @@ a {
 
 .mobile-brand {
   display: none;
-  color: #28233f;
+  color: #202a35;
 }
 
 .mobile-brand .brand-mark {
-  border-color: #e8e5f6;
+  border-color: #dfe3e7;
   color: #fff;
-  background: var(--violet);
+  background: var(--accent);
 }
 
 [hidden] {
@@ -467,7 +467,7 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(101, 85, 223, 0.36);
+  outline: 3px solid rgba(71, 85, 105, 0.35);
   outline-offset: 3px;
 }
 
