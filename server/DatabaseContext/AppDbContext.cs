@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Nexa.Server.Models;
-using server.Models;
 
 namespace Nexa.Server.DatabaseContext
 {

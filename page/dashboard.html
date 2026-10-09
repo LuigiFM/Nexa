@@ -157,6 +157,14 @@
                 <span id="progress-value">—</span>
               </div>
             </div>
+            <p class="weekly-goal-summary" id="weekly-goal-summary">Meta semanal ainda não disponível.</p>
+            <form class="goal-form" id="weekly-goal-form">
+              <label for="weekly-goal-input">Meta semanal de tarefas</label>
+              <div class="goal-form-controls">
+                <input id="weekly-goal-input" name="weeklyGoal" type="number" min="1" required />
+                <button type="submit">Salvar</button>
+              </div>
+            </form>
             <div class="progress-meta">
               <div>
                 <span class="meta-label">Tarefas</span>
@@ -182,7 +190,7 @@
 
             <div class="chat-thread" id="chat-thread" aria-live="polite">
               <div class="message message-bot">
-                Olá! Informe a matéria e, se quiser, sua tarefa atual. Depois, faça sua pergunta para eu enviar ao tutor.
+                Olá! Informe a matéria e, se quiser, selecione uma tarefa cadastrada. Depois, faça sua pergunta para eu enviar ao tutor.
               </div>
             </div>
 
@@ -193,7 +201,9 @@
               </label>
               <label>
                 Tarefa atual
-                <input id="context-task" type="text" placeholder="Ex.: Revisar capítulo 2" autocomplete="off" />
+                <select id="context-task" disabled>
+                  <option value="">Carregando tarefas...</option>
+                </select>
               </label>
             </div>
 
