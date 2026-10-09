@@ -23,8 +23,9 @@ namespace Nexa.Server.Services
 
             var requestPayload = new
             {
-                model = "gemini-3.8-flash",
-                input = msg
+                model = "gemini-3.5-flash-lite",
+                input = msg,
+                system_instruction = ""
             };
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -33,11 +34,13 @@ namespace Nexa.Server.Services
 
             HttpResponseMessage response = await _httpClient.SendAsync(request);
 
+            response.EnsureSuccessStatusCode();
+
             string content = await response.Content.ReadAsStringAsync();
+
             var json = JObject.Parse(content);
 
-            string answer = json?["output_text"]?.ToString() ?? "";
-
+            string answer = json?["steps"]?[1]?["content"]?[0]?["text"]?.ToString() ?? "";
             return answer;
         }
 

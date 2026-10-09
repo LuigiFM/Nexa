@@ -10,7 +10,6 @@ using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using server.Models;
 
 namespace server.Controllers
 {
@@ -20,10 +19,12 @@ namespace server.Controllers
     {
         private readonly AppDbContext _dbContext;
         private readonly LangFlowService _langFlowService;
-        public DashbordController(AppDbContext dbContext, LangFlowService langFlowService)
+        private readonly GeminiService _geminiService;
+        public DashbordController(AppDbContext dbContext, LangFlowService langFlowService, GeminiService geminiService)
         {
             _dbContext = dbContext;
             _langFlowService = langFlowService;
+             _geminiService = geminiService;
         }
 
         [HttpPost("register-study")]
@@ -35,8 +36,11 @@ namespace server.Controllers
             }
 
             User? user = await _dbContext.Users
-            .Include(u => u.studyStatus)
-            .FirstOrDefaultAsync(u => u.Id == userguid);
+                .Include(u => u.studyStatus)
+                    .ThenInclude(status => status.Tasks)
+                .Include(u => u.studyStatus)
+                    .ThenInclude(status => status.Materials)
+                .FirstOrDefaultAsync(u => u.Id == userguid);
 
             if (user == null)
             {
@@ -69,9 +73,59 @@ namespace server.Controllers
                         Status = taskForm.Status,
                         DurationMinutes = taskForm.DurationMinutes
                     };
+
+                    if(task.Status == Status.Completed)
+                    {
+                        task.CompletedDate = DateTime.Today;
+                    }
                     user.studyStatus.Tasks.Add(task);
                     _dbContext.Entry(task).State = EntityState.Added;
                 }
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPatch("update-task")]
+        public async Task<IActionResult> UpdateStatus(StatusUpdateForm statusUpdateForm)
+        {
+            if (!Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userguid))
+            {
+                return Unauthorized();
+            }
+
+            Guid TaskId = statusUpdateForm.TaskId;
+            Status status = statusUpdateForm.status;
+        
+
+            User? user = await _dbContext.Users
+            .Include(u => u.studyStatus)
+                .ThenInclude(s => s.Tasks)
+            .FirstOrDefaultAsync(u => u.Id == userguid);
+
+            if(user == null)
+            {
+                return Unauthorized();
+            }
+
+            StudyTask? task = user.studyStatus.Tasks.FirstOrDefault(t => t.Id == TaskId);
+
+            if(task == null)
+            {
+                return BadRequest("Task ID incorreto");
+            }
+
+            task.Status = status;
+            
+            if(status == Status.Completed)
+            {
+                task.CompletedDate = DateTime.Today;
+            }
+            else if(status == Status.Pending)
+            {
+                task.CompletedDate = null;
             }
 
             await _dbContext.SaveChangesAsync();
@@ -89,6 +143,9 @@ namespace server.Controllers
 
             User? user = await _dbContext.Users
             .Include(u => u.studyStatus)
+                .ThenInclude(u => u.Materials)
+            .Include(u => u.studyStatus)
+                .ThenInclude(u => u.Tasks)
             .FirstOrDefaultAsync(u => u.Id == userguid);
 
             if (user == null)
@@ -106,6 +163,11 @@ namespace server.Controllers
             if(task != null)
             {
                 _dbContext.Remove(task);
+            }
+
+            if (material == null && task == null)
+            {
+                return NotFound("Tarefa ou material não encontrado.");
             }
 
             await _dbContext.SaveChangesAsync();
@@ -136,11 +198,40 @@ namespace server.Controllers
             string message = $"Você é um tutor de estudos do Nexa. Usuário: {username}\nMatéria: {studyMessage.Context.Subject}\nTarefa atual: {studyMessage.Context.CurrentTask}\nPergunta: {studyMessage.Message}";
 
 
-            string answer = await _langFlowService.SendMessageAsync(message);
+            string answer = await _geminiService.SendMessageAsync(message);
 
             return Ok(answer);
         }
 
+        [HttpPatch("update-meta")]
+        public async Task<IActionResult> UpdateMeta(int newMeta)
+        {
+            if(newMeta <= 0)
+            {
+                return BadRequest();
+            }
+
+            if (!Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userguid))
+            {
+                return Unauthorized();
+            }
+
+            User? user = _dbContext.Users
+            .Include(u => u.studyStatus)
+            .FirstOrDefault<User>(u => u.Id == userguid);
+            
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            
+            user.studyStatus.WeeklyGoalTotal = newMeta;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
 
         [HttpGet("overview")]
         public async Task<IActionResult> Overview()
@@ -167,12 +258,35 @@ namespace server.Controllers
                 Email = user.Email
             };
 
+            int minutesFocus = user.studyStatus.Tasks
+            .Where(task => task.Status == Status.Completed && task.CompletedDate == DateTime.Today)
+            .Sum(task => task.DurationMinutes);
+
+            int completedTasks = user.studyStatus.Tasks
+            .Where(task => task.Status == Status.Completed && task.CompletedDate > DateTime.Now.AddDays(-7))
+            .Count();
+
+            float progressPercent = user.studyStatus.WeeklyGoalTotal > 0 ? ( (float) completedTasks / user.studyStatus.WeeklyGoalTotal) * 100 : 0;
+            OverviewStats overviewStats = new()
+            {
+                FocusTodayMinutes = minutesFocus,
+                WeeklyGoalCompleted = completedTasks,
+                WeeklyGoalTotal = user.studyStatus.WeeklyGoalTotal,
+                StreakDays = user.studyStatus.StreakDays,
+                ProgressPercent = progressPercent 
+            };
+
+            if(progressPercent > 100)
+            {
+                overviewStats.ProgressPercent = 100;
+            }
+            
 
 
             Overview overview = new()
             {
                 User = overviewUser,
-                Stats = new(),
+                Stats = overviewStats,
                 Tasks = new(),
                 Materials = new()
             };

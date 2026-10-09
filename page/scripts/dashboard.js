@@ -41,6 +41,17 @@ function addMessage(text, type = "bot") {
   return message;
 }
 
+function createDeleteButton(id, label) {
+  const button = document.createElement("button");
+  button.className = "delete-study-button";
+  button.type = "button";
+  button.dataset.studyId = id;
+  button.setAttribute("aria-label", `Excluir ${label}`);
+  button.title = `Excluir ${label}`;
+  button.textContent = "Excluir";
+  return button;
+}
+
 function renderTasks(tasks) {
   studyPlan.replaceChildren();
   document.querySelector("#task-count").textContent = `${tasks.length} ${tasks.length === 1 ? "tarefa" : "tarefas"}`;
@@ -75,14 +86,16 @@ function renderTasks(tasks) {
     details.textContent = [task.subject, duration].filter(Boolean).join(" · ") || "Sem detalhes";
 
     const status = document.createElement("span");
-    const normalizedStatus = String(task.status || "").toLowerCase();
+    const normalizedStatus = typeof task.status === "number"
+      ? task.status === 0 ? "completed" : "pending"
+      : String(task.status || "").toLowerCase();
     const completed = normalizedStatus === "done" || normalizedStatus === "completed" || normalizedStatus === "concluído";
     const inProgress = normalizedStatus === "inprogress" || normalizedStatus === "in-progress" || normalizedStatus === "em andamento";
     status.className = `plan-state ${completed ? "done" : inProgress ? "pending" : "upcoming"}`;
     status.textContent = completed ? "Concluído" : inProgress ? "Em curso" : "Pendente";
 
     copy.append(title, details);
-    item.append(number, copy, status);
+    item.append(number, copy, status, createDeleteButton(task.id, task.title || "tarefa"));
     studyPlan.appendChild(item);
   });
 }
@@ -119,7 +132,7 @@ function renderMaterials(materials) {
       copy.appendChild(type);
     }
 
-    item.append(bullet, copy);
+    item.append(bullet, copy, createDeleteButton(material.id, material.title || "material"));
     materialList.appendChild(item);
   });
 }
@@ -217,6 +230,49 @@ async function registerStudyItem(form, item, idleButtonText) {
     setFormBusy(form, false, idleButtonText);
   }
 }
+
+async function deleteStudyItem(button) {
+  const studyId = button.dataset.studyId;
+  if (!studyId) {
+    showNotice("Não foi possível identificar o item para exclusão.");
+    return;
+  }
+
+  button.disabled = true;
+  showNotice("");
+
+  try {
+    await window.authApi.request(`/dashboard/delete-study?studyId=${encodeURIComponent(studyId)}`, {
+      method: "DELETE",
+    });
+
+    const overview = await loadOverview();
+    if (overview) {
+      showNotice("Item excluído com sucesso.", "success");
+    }
+  } catch (error) {
+    showNotice(error.message);
+    if (error.status === 401) {
+      window.location.replace("./index.html");
+    }
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function handleStudyListClick(event) {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+
+  const deleteButton = event.target.closest(".delete-study-button");
+  if (deleteButton instanceof HTMLButtonElement) {
+    deleteStudyItem(deleteButton);
+  }
+}
+
+studyPlan.addEventListener("click", handleStudyListClick);
+materialList.addEventListener("click", handleStudyListClick);
 
 taskForm.addEventListener("submit", (event) => {
   event.preventDefault();

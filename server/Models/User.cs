@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using server.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Nexa.Server.Models;
 
 namespace Nexa.Server.Models
 {

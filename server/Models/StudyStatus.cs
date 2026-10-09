@@ -6,9 +6,10 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Nexa.Server.Models;
 
-namespace server.Models
+namespace Nexa.Server.Models
 {
-
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum Status { Completed, Pending } 
     public class StudyStatusForm
     {
         public List<StudyTaskForm> Tasks { get; set; } = new();
@@ -32,6 +33,8 @@ namespace server.Models
 
         public int StreakDays { get; set; }
 
+        public DateTime LastLogin  { get; set; }
+
         //att
         public List<StudyTask> Tasks { get; set; } = new();
 
@@ -53,8 +56,10 @@ namespace server.Models
 
         public string Subject { get; set; } = string.Empty;
 
-
-        public string Status { get; set; } = "notdone";
+        public Status Status { get; set; } = Status.Pending;
+        public DateTime? CompletedDate { get; set; } = null;
+    
+        
     }
 
     public class StudyMaterial
@@ -79,7 +84,7 @@ namespace server.Models
         public string Subject { get; set; } = string.Empty;
 
 
-        public string Status { get; set; } = "notdone";
+        public Status Status { get; set; }
     }
 
     public class StudyMaterialForm
@@ -90,4 +95,12 @@ namespace server.Models
 
         public string Type { get; set; } = string.Empty;
     }
+
+    public class StatusUpdateForm
+{
+    public Guid TaskId { get; set; }
+    
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public Status status { get; set; }
+}
 }

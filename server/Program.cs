@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Nexa.Server.Services;
 using DotNetEnv;
+using Nexa.Server.Middlewares;
 
 Env.Load();
 
@@ -49,6 +50,7 @@ app.UseCors("Default");
 
 app.UseSession();
 
+app.UseMiddleware<DailyStreakMiddleware>();
 app.MapControllers();
 
 app.Run();

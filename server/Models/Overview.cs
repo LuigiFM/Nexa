@@ -47,7 +47,7 @@ namespace Nexa.Server.Models
         public int StreakDays { get; set; }
 
         [JsonPropertyName("progressPercent")]
-        public int ProgressPercent { get; set; }
+        public float ProgressPercent { get; set; }
     }
 
     public class OverviewTask
@@ -64,8 +64,9 @@ namespace Nexa.Server.Models
         [JsonPropertyName("subject")]
         public string Subject { get; set; } = string.Empty;
 
+        
         [JsonPropertyName("status")]
-        public string Status { get; set; } = "none";
+        public Status Status { get; set; }
     }
 
     public class OverviewMaterial
