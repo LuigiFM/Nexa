@@ -7,7 +7,7 @@
       name="description"
       content="Acesse sua conta ou crie seu cadastro de forma simples e segura."
     />
-    <meta name="theme-color" content="#f4f5f6" />
+    <meta name="theme-color" content="#f6f7f2" />
     <title>Acesse sua conta</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,10 +16,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style/style.css" />
+    <link rel="stylesheet" href="./style/nexa.css" />
     <script src="./scripts/api.js" defer></script>
     <script src="./scripts/index.js" defer></script>
   </head>
-  <body>
+  <body class="auth-page">
     <main class="auth-layout">
       <section class="welcome-panel" aria-label="Bem-vindo">
         <a class="brand" href="./index.html" aria-label="Nexa, página inicial">
@@ -32,15 +33,21 @@
         </a>
 
         <div class="welcome-copy">
-          <span class="eyebrow"><span class="eyebrow-dot"></span> SEU ESPAÇO, DO SEU JEITO</span>
-          <h1>Boas ideias começam com uma <span>conexão.</span></h1>
-          <p>Entre na sua conta e continue de onde sua próxima grande ideia começa.</p>
+          <span class="eyebrow"><span class="eyebrow-dot"></span> SEU PRÓXIMO PASSO COMEÇA AQUI</span>
+          <h1>Menos dúvidas.<br>Mais <span>descobertas.</span></h1>
+          <p>Um espaço para organizar seus estudos, entender o que parece difícil e aprender no seu ritmo.</p>
         </div>
 
+        <div class="learning-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <span class="art-spark">✦</span>
+          <div class="art-note"><span>UMA IDEIA DE CADA VEZ</span><strong>Aprender.<br>Conectar.<br><em>Evoluir.</em></strong><i></i><i></i></div>
+          <div class="art-label"><span>✧</span> Seu tutor, ao seu lado.</div>
+        </div>
         <div class="quote-card">
-          <span class="quote-mark" aria-hidden="true">“</span>
-          <p>Simples, seguro e pronto para acompanhar você.</p>
-          <span class="quote-caption">UM NOVO JEITO DE FAZER ACONTECER</span>
+          <span class="quote-mark" aria-hidden="true">✦</span>
+          <p>Cada pequena descoberta é um grande passo.</p>
+          <span class="quote-caption">SEU APRENDIZADO, UMA CONQUISTA POR VEZ</span>
         </div>
 
         <span class="panel-decoration panel-decoration-one" aria-hidden="true"></span>
@@ -229,7 +236,7 @@
           </p>
         </div>
 
-        <span class="copyright">© 2026 Nexa. Feito para suas próximas ideias.</span>
+        <span class="copyright">© 2026 Nexa. Aprender abre caminhos.</span>
       </section>
     </main>
   </body>

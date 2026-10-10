@@ -16,6 +16,83 @@ const taskForm = document.querySelector("#task-form");
 const materialForm = document.querySelector("#material-form");
 const weeklyGoalForm = document.querySelector("#weekly-goal-form");
 const navigationLinks = [...document.querySelectorAll(".top-nav .nav-link")];
+window.materialAttachments.init(showNotice);
+
+const progressRing = document.querySelector("#progress-ring");
+const progressValue = document.querySelector("#progress-value");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let displayedProgress = 0;
+let targetProgress = 0;
+let progressFrame = null;
+
+function paintProgress(percent) {
+  displayedProgress = percent;
+  // A conic gradient starts at 12 o'clock and fills clockwise.
+  progressRing.style.background =
+    `conic-gradient(from 0deg, var(--success) 0% ${percent}%, #e0e5d8 ${percent}% 100%)`;
+  progressValue.textContent = `${Math.round(percent)}%`;
+}
+
+function finishProgress() {
+  progressFrame = null;
+  progressRing.classList.remove("is-advancing");
+}
+
+function animateProgress(percent) {
+  if (progressFrame !== null) cancelAnimationFrame(progressFrame);
+  const previousTarget = targetProgress;
+  const start = displayedProgress;
+  targetProgress = percent;
+  progressRing.classList.remove("is-complete");
+  progressRing.setAttribute("role", "progressbar");
+  progressRing.setAttribute("aria-valuemin", "0");
+  progressRing.setAttribute("aria-valuemax", "100");
+  progressRing.setAttribute("aria-valuenow", String(Math.round(percent)));
+  progressRing.setAttribute("aria-label", "Meta semanal concluída");
+
+  if (reducedMotion.matches || Math.abs(percent - start) < 0.01) {
+    paintProgress(percent);
+    finishProgress();
+    return;
+  }
+
+  const startedAt = performance.now();
+  const duration = 1000;
+  progressRing.classList.toggle("is-advancing", percent > start);
+  const tick = (now) => {
+    const elapsed = Math.min(1, (now - startedAt) / duration);
+    const eased = 1 - Math.pow(1 - elapsed, 3);
+    paintProgress(start + (percent - start) * eased);
+    if (elapsed < 1) {
+      progressFrame = requestAnimationFrame(tick);
+    } else {
+      paintProgress(percent);
+      finishProgress();
+      if (percent === 100 && previousTarget < 100) {
+        progressRing.classList.add("is-complete");
+      }
+    }
+  };
+  progressFrame = requestAnimationFrame(tick);
+}
+
+reducedMotion.addEventListener("change", () => {
+  if (reducedMotion.matches && progressFrame !== null) {
+    cancelAnimationFrame(progressFrame);
+    paintProgress(targetProgress);
+    finishProgress();
+  }
+});
+
+
+// Open the inline form before following the anchor, then focus the first field.
+document.querySelectorAll("[data-open-entry]").forEach((link) => {
+  link.addEventListener("click", () => {
+    const entry = document.getElementById(link.dataset.openEntry);
+    entry.open = true;
+    entry.querySelector("input")?.focus({ preventScroll: true });
+  });
+});
 
 const studyConfig = {
   quickActions: {
@@ -80,6 +157,7 @@ function renderTasks(tasks) {
   tasks.forEach((task, index) => {
     const item = document.createElement("li");
     item.className = "plan-item";
+    item.dataset.taskId = task.id;
 
     const number = document.createElement("span");
     number.className = "plan-index";
@@ -143,6 +221,7 @@ function renderTaskContextOptions(tasks) {
 }
 
 function renderMaterials(materials) {
+  window.materialAttachments.setMaterials(materials);
   materialList.replaceChildren();
   const countLabel = `${materials.length} ${materials.length === 1 ? "item" : "itens"}`;
   document.querySelector("#material-count").textContent = countLabel;
@@ -174,6 +253,7 @@ function renderMaterials(materials) {
       copy.appendChild(type);
     }
 
+    window.materialAttachments.decorate(copy, material);
     item.append(bullet, copy, createDeleteButton(material.id, material.title || "material"));
     materialList.appendChild(item);
   });
@@ -199,13 +279,7 @@ function renderStats(stats) {
     ? `${weeklyCompleted}/${weeklyTotal} tarefas`
     : `${weeklyCompleted} tarefas`;
   document.querySelector("#streak-value").textContent = `${streakDays} ${streakDays === 1 ? "dia" : "dias"}`;
-  document.querySelector("#progress-value").textContent = `${Math.round(progressPercent)}%`;
-  document.querySelector("#progress-ring").style.background =
-    `conic-gradient(var(--success) 0 ${progressPercent}%, #dce1e5 ${progressPercent}% 100%)`;
-  document.querySelector("#progress-ring").setAttribute(
-    "aria-label",
-    `${Math.round(progressPercent)}% da meta semanal concluída`
-  );
+  animateProgress(progressPercent);
   document.querySelector("#weekly-goal-summary").textContent = weeklyTotal > 0
     ? `${weeklyCompleted} de ${weeklyTotal} tarefas concluídas nos últimos 7 dias`
     : "Defina uma meta semanal para acompanhar seu progresso.";
@@ -213,6 +287,12 @@ function renderStats(stats) {
 }
 
 function showStatsUnavailable() {
+  if (progressFrame !== null) cancelAnimationFrame(progressFrame);
+  finishProgress();
+  displayedProgress = 0;
+  targetProgress = 0;
+  progressRing.classList.remove("is-complete");
+  progressRing.removeAttribute("aria-valuenow");
   document.querySelector("#focus-today-value").textContent = "—";
   document.querySelector("#weekly-goal-value").textContent = "—";
   document.querySelector("#streak-value").textContent = "—";
@@ -283,7 +363,7 @@ function setFormBusy(form, busy, idleButtonText) {
   submitButton.textContent = busy ? "Salvando..." : idleButtonText;
 }
 
-async function registerStudyItem(form, item, idleButtonText) {
+async function registerStudyItem(form, item, idleButtonText, attachment = null) {
   setFormBusy(form, true, idleButtonText);
   showNotice("");
 
@@ -301,7 +381,15 @@ async function registerStudyItem(form, item, idleButtonText) {
 
     const overview = await loadOverview();
     if (overview) {
-      showNotice("Item adicionado com sucesso.", "success");
+      if (attachment) {
+        try {
+          await window.materialAttachments.saveNew(overview.materials || [], attachment, item.materials[0]);
+        } catch (error) {
+          showNotice(error.message);
+          return;
+        }
+      }
+      showNotice(attachment ? "Material adicionado. Conteúdo salvo neste navegador." : "Item adicionado com sucesso.", "success");
     }
   } catch (error) {
     showNotice(error.message);
@@ -315,6 +403,7 @@ async function registerStudyItem(form, item, idleButtonText) {
 
 async function deleteStudyItem(button) {
   const studyId = button.dataset.studyId;
+  const isMaterial = Boolean(button.closest("#material-list"));
   if (!studyId) {
     showNotice("Não foi possível identificar o item para exclusão.");
     return;
@@ -328,6 +417,7 @@ async function deleteStudyItem(button) {
       method: "DELETE",
     });
 
+    if (isMaterial) await window.materialAttachments.remove(studyId);
     const overview = await loadOverview();
     if (overview) {
       showNotice("Item excluído com sucesso.", "success");
@@ -351,6 +441,8 @@ async function updateTaskStatus(button) {
   }
 
   button.disabled = true;
+  button.classList.add("is-saving");
+  button.setAttribute("aria-busy", "true");
   showNotice("");
 
   try {
@@ -361,7 +453,10 @@ async function updateTaskStatus(button) {
 
     const overview = await loadOverview();
     if (overview) {
-      showNotice("Status da tarefa atualizado.", "success");
+      const updatedItem = [...studyPlan.children].find((item) => item.dataset.taskId === taskId);
+      if (newStatus === "Completed") updatedItem?.classList.add("just-completed");
+      updatedItem?.querySelector(".task-status-button")?.focus({ preventScroll: true });
+      showNotice(newStatus === "Completed" ? "Mais um passo dado. Tarefa concluída!" : "Tarefa reaberta.", "success");
     }
   } catch (error) {
     showNotice(error.message);
@@ -370,6 +465,8 @@ async function updateTaskStatus(button) {
     }
   } finally {
     button.disabled = false;
+    button.classList.remove("is-saving");
+    button.removeAttribute("aria-busy");
   }
 }
 
@@ -417,19 +514,25 @@ taskForm.addEventListener("submit", (event) => {
   }, "Adicionar tarefa");
 });
 
-materialForm.addEventListener("submit", (event) => {
+materialForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!materialForm.reportValidity()) {
     return;
   }
 
+  setFormBusy(materialForm, true, "Adicionar material");
+  const attachment = await window.materialAttachments.capture();
+  if (!attachment) {
+    setFormBusy(materialForm, false, "Adicionar material");
+    return;
+  }
   registerStudyItem(materialForm, {
     tasks: [],
     materials: [{
       title: document.querySelector("#material-title").value.trim(),
       type: document.querySelector("#material-type").value,
     }],
-  }, "Adicionar material");
+  }, "Adicionar material", attachment);
 });
 
   weeklyGoalForm.addEventListener("submit", async (event) => {
@@ -487,7 +590,8 @@ async function sendQuestion(text) {
 
   showNotice("");
   addMessage(prompt, "user");
-  const pendingMessage = addMessage("Consultando o tutor...", "bot");
+  const pendingMessage = addMessage("Consultando o tutor", "bot");
+  pendingMessage.classList.add("is-thinking");
   chatInput.value = "";
   setChatBusy(true);
 
@@ -518,6 +622,7 @@ async function sendQuestion(text) {
       return;
     }
   } finally {
+    pendingMessage.classList.remove("is-thinking");
     setChatBusy(false);
   }
 }
@@ -529,7 +634,12 @@ chatForm.addEventListener("submit", (event) => {
 
 featureButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    document.querySelector("#tutor").scrollIntoView({ block: "start" });
     const action = button.dataset.action;
+    if (action === "tutor") {
+      chatInput.focus({ preventScroll: true });
+      return;
+    }
     const subject = contextSubject.value.trim() || "a matéria que estou estudando";
     const prompt = studyConfig.quickActions[action]?.replaceAll("{subject}", subject);
     if (prompt) {
@@ -542,6 +652,7 @@ async function loadAccount() {
   try {
     const user = await window.authApi.request("me");
 
+    window.materialAttachments.setAccount(user);
     document.querySelector("#account-username").textContent = user.username;
     document.querySelector("#account-email").textContent = user.email;
     document.querySelector("#welcome-title").textContent = `Olá, ${user.username}!`;

@@ -1,298 +1,231 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f4f5f6" />
-    <meta name="description" content="Seu espaço de estudos com IA no Nexa." />
-    <title>Dashboard · Nexa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./style/dashboard.css" />
-    <script src="./scripts/api.js" defer></script>
-    <script src="./scripts/dashboard.js" defer></script>
-  </head>
-  <body>
-    <div class="dashboard-layout">
-      <header class="topbar">
-        <a class="brand" href="./dashboard.html" aria-label="Nexa, dashboard">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" fill="none">
-              <path d="M7 23V9l18 14V9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </span>
-          <span>nexa<span class="brand-period">.</span></span>
-        </a>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#f6f7f2" name="theme-color"/>
+<meta content="Seu espaço de estudos com IA no Nexa." name="description"/>
+<title>Dashboard · Nexa</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="./style/dashboard.css" rel="stylesheet"/>
 
-        <nav class="top-nav" aria-label="Navegação principal">
-          <a class="nav-link is-active" href="#dashboard" aria-current="page">Dashboard</a>
-          <a class="nav-link" href="#tutor">Tutor IA</a>
-          <a class="nav-link" href="#materials">Materiais</a>
-          <a class="nav-link" href="#progress">Progresso</a>
-        </nav>
-
-        <div class="user-menu" aria-label="Menu do usuário">
-          <div class="avatar-pill">
-            <span class="avatar-dot" id="avatar-initial">N</span>
-            <span id="avatar-username">Estudante</span>
-          </div>
-          <button class="logout-button" id="logout-button" type="button">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M10 17l5-5-5-5m5 5H3m9-9h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
+<script defer="" src="./scripts/api.js"></script>
+<script defer src="./scripts/materials.js"></script>
+<script defer="" src="./scripts/dashboard.js"></script>
+</head>
+<body class="workspace-page">
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+  <div class="dashboard-layout">
+    <aside class="sidebar" aria-label="Menu do espaço de estudos">
+      <a aria-label="Nexa, dashboard" class="brand" href="./dashboard.html">
+<span aria-hidden="true" class="brand-mark">
+<svg fill="none" viewbox="0 0 32 32">
+<path d="M7 23V9l18 14V9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</svg>
+</span>
+<span>nexa<span class="brand-period">.</span></span>
+</a>
+      <div class="sidebar-caption">SEU ESPAÇO</div>
+      <nav class="top-nav" aria-label="Navegação principal"><a class="nav-link is-active" href="#dashboard" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Visão geral</span></a><a class="nav-link" href="#routine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="m8 12 3 3 5-6"/></svg><span>Minha rotina</span></a><a class="nav-link" href="#tutor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></svg><span>Tutor IA</span></a><a class="nav-link" href="#materials"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/></svg><span>Meus materiais</span></a><a class="nav-link" href="#progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16h16M8 15v-4m5 4V7m5 8v-6"/></svg><span>Meu progresso</span></a></nav>
+      <div class="sidebar-note"><span aria-hidden="true">✦</span><strong>Pequenos passos.<br>Grandes descobertas.</strong><p>O importante é continuar aprendendo.</p><a href="#tutor">Vamos estudar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+      <div class="sidebar-bottom"><a class="account-link" href="#account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg> Minha conta</a><div aria-label="Menu do usuário" class="user-menu">
+<div class="avatar-pill">
+<span class="avatar-dot" id="avatar-initial">N</span>
+<span id="avatar-username">Estudante</span>
+</div>
+<button class="logout-button" id="logout-button" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 24 24">
+<path d="M10 17l5-5-5-5m5 5H3m9-9h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path>
+</svg>
             Sair
           </button>
-        </div>
-      </header>
-
-      <main class="dashboard-main">
-        <section class="welcome-card" id="dashboard" aria-labelledby="welcome-title">
-          <div class="welcome-copy">
-            <span class="eyebrow"><span class="status-dot"></span> SESSÃO ATIVA</span>
-            <p class="greeting">ESTUDE COM IA</p>
-            <h1 id="welcome-title">Olá, estudante!</h1>
-            <p class="welcome-description">
-              Seu espaço para revisar conteúdos, tirar dúvidas e evoluir com foco em cada matéria.
-            </p>
-          </div>
-
-          <div class="hero-stats" aria-label="Resumo do seu estudo">
-            <div class="stat-pill">
-              <span class="stat-label">Foco hoje</span>
-              <strong id="focus-today-value">—</strong>
+</div></div>
+    </aside>
+    <div class="workspace-shell">
+      <header class="workspace-topbar"><div><span class="breadcrumb">Meu espaço</span><span class="breadcrumb-divider">/</span><strong>Estudos</strong></div><span class="workspace-label"><span></span> Aprender abre caminhos</span></header>
+      <main class="dashboard-main" id="main-content">
+        <section class="overview" id="dashboard" aria-labelledby="welcome-title">
+          <div class="page-heading"><div><span class="section-kicker">QUE BOM TER VOCÊ AQUI</span><h1 id="welcome-title">Olá, estudante!</h1><p>Vamos dar o próximo passo no seu aprendizado?</p></div><a class="new-task-button" href="#task-entry" data-open-entry="task-entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Nova tarefa</a></div>
+          <div class="overview-grid">
+            <div class="welcome-card">
+              <div class="welcome-copy"><span class="eyebrow">NO SEU TEMPO. DO SEU JEITO.</span><h2>Um pouco de foco.<br>Um mundo de possibilidades.</h2><p>Organize suas ideias e transforme dúvidas em descobertas, com seu tutor ao lado.</p><a class="hero-link" href="#tutor">Começar a aprender <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+              <div class="welcome-decoration" aria-hidden="true"><div class="hero-orbit"></div><div class="hero-orbit second"></div><div class="hero-book"><span>nexa / estudos</span><strong>Seu próximo<br>capítulo.</strong><i>✦</i></div></div>
             </div>
-            <div class="stat-pill">
-              <span class="stat-label">Meta semanal</span>
-              <strong id="weekly-goal-value">—</strong>
+            <div class="hero-stats" aria-label="Resumo do seu estudo">
+              <div class="stat-pill"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><span class="stat-label">Foco hoje</span><strong id="focus-today-value">—</strong></div></div>
+              <div class="stat-pill"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="m8 12 3 3 5-6"/></svg></span><div><span class="stat-label">Meta semanal</span><strong id="weekly-goal-value">—</strong></div></div>
+              <div class="stat-pill"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 6 7 7 7 12a7 7 0 0 1-14 0c0-3 2-5 4-7 0 3 1 4 2 4 2-3 2-6 1-9Z"/></svg></span><div><span class="stat-label">Dias seguidos</span><strong id="streak-value">—</strong></div></div>
             </div>
-            <div class="stat-pill">
-              <span class="stat-label">Streak</span>
-              <strong id="streak-value">—</strong>
-            </div>
-          </div>
-
-          <div class="welcome-decoration" aria-hidden="true">
-            <span></span><span></span><span></span>
           </div>
         </section>
-
-        <section class="feature-grid" aria-label="Ferramentas do Nexa">
-          <article class="feature-card primary">
-            <span class="feature-tag">Tutor IA</span>
-            <h3>Explicações sob medida</h3>
-            <p>Converse com o assistente para tirar dúvidas e receber apoio em cada etapa.</p>
-            <button type="button" data-action="tutor">Abrir tutor</button>
-          </article>
-
-          <article class="feature-card">
-            <span class="feature-tag">Resumos</span>
-            <h3>Transforme notas em revisão</h3>
-            <p>Receba versões curtas, claras e estruturadas dos conteúdos mais difíceis.</p>
-            <button type="button" data-action="resumo">Gerar resumo</button>
-          </article>
-
-          <article class="feature-card">
-            <span class="feature-tag">Quiz</span>
-            <h3>Teste o que você aprendeu</h3>
-            <p>Pratique com perguntas relevantes e entenda melhor onde precisa focar.</p>
-            <button type="button" data-action="quiz">Começar quiz</button>
-          </article>
-
-          <article class="feature-card">
-            <span class="feature-tag">Flashcards</span>
-            <h3>Repetição espaçada</h3>
-            <p>Revise termos e conceitos de forma leve, rápida e mais eficiente.</p>
-            <button type="button" data-action="flashcards">Ver flashcards</button>
-          </article>
-        </section>
-
-        <section class="content-grid" aria-label="Plano de estudo e progresso">
-          <div class="panel">
-            <div class="section-heading">
-              <div>
-                <span class="section-kicker">TAREFAS</span>
-                <h2>Rotina de estudo</h2>
-              </div>
-              <span class="method-badge" id="task-count">Carregando...</span>
-            </div>
-
-            <ul class="study-plan" id="study-plan" aria-label="Lista de tarefas de estudo" aria-live="polite">
-              <li class="list-empty-state">
+        <div class="study-workspace">
+          <div class="study-primary">
+            <section class="panel routine-panel" id="routine" aria-labelledby="routine-title">
+              <div class="section-heading"><div><span class="section-kicker">UM PLANO PARA EVOLUIR</span><h2 id="routine-title">Minha rotina</h2></div><span class="method-badge" id="task-count">Carregando...</span></div>
+              <ul aria-label="Lista de tarefas de estudo" aria-live="polite" class="study-plan" id="study-plan">
+<li class="list-empty-state">
                 Carregando tarefas...
               </li>
-            </ul>
-
-            <form class="study-entry-form" id="task-form">
-              <h3>Adicionar tarefa</h3>
-              <label>
+</ul>
+              <details class="entry-disclosure" id="task-entry"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Adicionar tarefa à rotina</summary><form class="study-entry-form" id="task-form">
+<h3>Adicionar tarefa</h3>
+<label>
                 Título
-                <input id="task-title" name="title" type="text" maxlength="120" required />
-              </label>
-              <label>
+                <input id="task-title" maxlength="120" name="title" placeholder="Ex.: Revisar divisão celular" required="" type="text"/>
+</label>
+<label>
                 Matéria
-                <input id="task-subject" name="subject" type="text" maxlength="80" required />
-              </label>
-              <label>
+                <input id="task-subject" maxlength="80" name="subject" placeholder="Ex.: Biologia" required="" type="text"/>
+</label>
+<label>
                 Duração planejada (minutos)
-                <input id="task-duration" name="durationMinutes" type="number" min="1" max="1440" value="20" required />
-              </label>
-              <button type="submit" id="task-submit">Adicionar tarefa</button>
-            </form>
-          </div>
-
-          <aside class="panel" id="progress">
-            <div class="section-heading compact">
-              <div>
-                <span class="section-kicker">PROGRESSO</span>
-                <h2>Seus resultados</h2>
-              </div>
-            </div>
-
-            <div class="progress-ring" id="progress-ring" aria-label="Progresso ainda não disponível">
-              <div class="ring-core">
-                <span id="progress-value">—</span>
-              </div>
-            </div>
-            <p class="weekly-goal-summary" id="weekly-goal-summary">Meta semanal ainda não disponível.</p>
-            <form class="goal-form" id="weekly-goal-form">
-              <label for="weekly-goal-input">Meta semanal de tarefas</label>
-              <div class="goal-form-controls">
-                <input id="weekly-goal-input" name="weeklyGoal" type="number" min="1" required />
-                <button type="submit">Salvar</button>
-              </div>
-            </form>
-            <div class="progress-meta">
-              <div>
-                <span class="meta-label">Tarefas</span>
-                <strong id="progress-task-count">—</strong>
-              </div>
-              <div>
-                <span class="meta-label">Materiais</span>
-                <strong id="progress-material-count">—</strong>
-              </div>
-            </div>
-          </aside>
-        </section>
-
-        <section class="lower-grid" aria-label="Assistente IA e materiais">
-          <div class="panel ai-panel" id="tutor">
-            <div class="section-heading">
-              <div>
-                <span class="section-kicker">ASSISTENTE IA</span>
-                <h2>Meu tutor</h2>
-              </div>
-              <span class="method-badge" id="tutor-status">pronto</span>
-            </div>
-
-            <div class="chat-thread" id="chat-thread" aria-live="polite">
-              <div class="message message-bot">
-                Olá! Informe a matéria e, se quiser, selecione uma tarefa cadastrada. Depois, faça sua pergunta para eu enviar ao tutor.
-              </div>
-            </div>
-
-            <div class="chat-context">
-              <label>
+                <input id="task-duration" max="1440" min="1" name="durationMinutes" required="" type="number" value="20"/>
+</label>
+<button id="task-submit" type="submit">Adicionar tarefa</button>
+</form></details>
+            </section>
+            <section class="panel ai-panel" id="tutor" aria-labelledby="tutor-title">
+              <div class="section-heading"><div class="tutor-heading"><span class="tutor-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></svg></span><div><span class="section-kicker">APRENDA COM IA</span><h2 id="tutor-title">Seu parceiro de descobertas</h2></div></div><span class="method-badge" id="tutor-status">pronto</span></div>
+              <p class="panel-description">Uma explicação, uma revisão ou um novo desafio. Por onde começamos?</p>
+              <div class="chat-context">
+<label>
                 Matéria
-                <input id="context-subject" type="text" placeholder="Ex.: Biologia" autocomplete="off" />
-              </label>
-              <label>
+                <input autocomplete="off" id="context-subject" placeholder="Ex.: Biologia" type="text"/>
+</label>
+<label>
                 Tarefa atual
-                <select id="context-task" disabled>
-                  <option value="">Carregando tarefas...</option>
-                </select>
-              </label>
-            </div>
-
-            <form class="prompt-box" id="chat-form">
-              <input id="chat-input" type="text" placeholder="Pergunte ao tutor de estudos..." aria-label="Pergunte ao tutor" autocomplete="off" />
-              <button id="chat-send" type="submit">Enviar</button>
-            </form>
+                <select disabled="" id="context-task">
+<option value="">Carregando tarefas...</option>
+</select>
+</label>
+</div>
+              <div class="tool-shortcuts" aria-label="Ferramentas de estudo"><button type="button" class="tool-shortcut tool-tutor" data-action="tutor"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"></path></svg><span>Tutor IA</span></button><button type="button" class="tool-shortcut tool-resumo" data-action="resumo"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24"><path d="M7 3h7l4 4v14H6V3h1Zm7 0v5h4M9 12h6m-6 4h4"></path></svg><span>Resumos</span></button><button type="button" class="tool-shortcut tool-quiz" data-action="quiz"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><span>Quiz</span></button><button type="button" class="tool-shortcut tool-flashcards" data-action="flashcards"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24"><rect height="15" rx="3" width="14" x="6" y="6"></rect><path d="M15 3H5a2 2 0 0 0-2 2v11m7-5h6m-6 4h4"></path></svg><span>Flashcards</span></button></div>
+              <div class="chat-thread" id="chat-thread" aria-live="polite"><div class="message message-bot">Olá! Escolha uma matéria acima e me conte o que você quer aprender. Podemos explorar um conceito, criar um resumo ou praticar juntos.</div></div>
+              <form class="prompt-box" id="chat-form">
+<input aria-label="Pergunte ao tutor" autocomplete="off" id="chat-input" placeholder="Pergunte ao tutor de estudos..." type="text"/>
+<button id="chat-send" type="submit">Enviar</button>
+</form>
+            </section>
           </div>
-
-          <div class="panel material-panel" id="materials">
-            <div class="section-heading">
-              <div>
-                <span class="section-kicker">MATERIAIS</span>
-                <h2>Para revisar</h2>
-              </div>
-              <span class="method-badge" id="material-count">Carregando...</span>
-            </div>
-
-            <ul class="material-list" id="material-list" aria-label="Materiais de estudo" aria-live="polite">
-              <li class="list-empty-state">
+          <div class="study-secondary">
+            <aside class="panel" id="progress">
+<div class="section-heading compact">
+<div>
+<span class="section-kicker">PROGRESSO</span>
+<h2>Um passo por vez</h2>
+</div>
+</div>
+<div aria-label="Progresso ainda não disponível" class="progress-ring" id="progress-ring">
+<div class="ring-core">
+<span id="progress-value">—</span>
+</div>
+</div>
+<p class="weekly-goal-summary" id="weekly-goal-summary">Meta semanal ainda não disponível.</p>
+<details class="inline-disclosure"><summary>Ajustar meta semanal</summary><form class="goal-form" id="weekly-goal-form">
+<label for="weekly-goal-input">Meta semanal de tarefas</label>
+<div class="goal-form-controls">
+<input id="weekly-goal-input" min="1" name="weeklyGoal" required="" type="number"/>
+<button type="submit">Salvar</button>
+</div>
+</form></details>
+<div class="progress-meta">
+<div>
+<span class="meta-label">Tarefas</span>
+<strong id="progress-task-count">—</strong>
+</div>
+<div>
+<span class="meta-label">Materiais</span>
+<strong id="progress-material-count">—</strong>
+</div>
+</div>
+</aside>
+            <div class="panel material-panel" id="materials">
+<div class="section-heading">
+<div>
+<span class="section-kicker">MATERIAIS</span>
+<h2>Para revisar</h2>
+</div>
+<span class="method-badge" id="material-count">Carregando...</span>
+</div>
+<ul aria-label="Materiais de estudo" aria-live="polite" class="material-list" id="material-list">
+<li class="list-empty-state">
                 Carregando materiais...
               </li>
-            </ul>
-
-            <form class="study-entry-form" id="material-form">
-              <h3>Adicionar material</h3>
-              <label>
+</ul>
+<details class="entry-disclosure" id="material-entry"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Adicionar material</summary><form class="study-entry-form" id="material-form">
+<h3>Adicionar material</h3>
+<label>
                 Título
-                <input id="material-title" name="title" type="text" maxlength="120" required />
-              </label>
-              <label>
+                <input id="material-title" maxlength="120" name="title" placeholder="Ex.: Anotações do capítulo 3" required="" type="text"/>
+</label>
+<label>
                 Tipo
-                <select id="material-type" name="type" required>
-                  <option value="">Selecione o tipo</option>
-                  <option value="Resumo">Resumo</option>
-                  <option value="Anotações">Anotações</option>
-                  <option value="PDF">PDF</option>
-                  <option value="Link">Link</option>
-                  <option value="Outro">Outro</option>
-                </select>
-              </label>
-              <button type="submit" id="material-submit">Adicionar material</button>
-            </form>
+                <select id="material-type" name="type" required="">
+<option value="">Selecione o tipo</option>
+<option value="Resumo">Resumo</option>
+<option value="Anotações">Anotações</option>
+<option value="PDF">PDF</option>
+<option value="Link">Link</option>
+<option value="Outro">Outro</option>
+</select>
+</label>
+<div id="material-content-fields"></div>
+<p class="local-material-note">Conteúdo salvo neste navegador. Não é enviado ao servidor.</p>
+<button id="material-submit" type="submit">Adicionar material</button>
+</form></details>
+</div>
+            <div class="study-note"><span aria-hidden="true">✧</span><p>Você não precisa aprender tudo hoje.<br><strong>Só precisa dar o próximo passo.</strong></p></div>
           </div>
-        </section>
-
-        <section class="account-section" aria-labelledby="account-title">
-          <div class="section-heading">
-            <div>
-              <span class="section-kicker">PERFIL</span>
-              <h2 id="account-title">Dados da conta</h2>
-            </div>
-          </div>
-
-          <div class="account-card" id="account-card" aria-live="polite">
-            <p class="loading-message" id="loading-message">Carregando suas informações...</p>
-            <div class="account-details" id="account-details" hidden>
-              <article class="detail-item">
-                <span class="detail-icon user-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.7" />
-                    <path d="M5 20c.6-3.2 3.1-5 7-5s6.4 1.8 7 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-                  </svg>
-                </span>
-                <span class="detail-copy">
-                  <span class="detail-label">Nome de usuário</span>
-                  <strong id="account-username">—</strong>
-                </span>
-              </article>
-              <article class="detail-item">
-                <span class="detail-icon email-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3.5" y="5" width="17" height="14" rx="2" stroke="currentColor" stroke-width="1.7" />
-                    <path d="m4.5 7 7.5 6 7.5-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </span>
-                <span class="detail-copy">
-                  <span class="detail-label">E-mail</span>
-                  <strong id="account-email">—</strong>
-                </span>
-              </article>
-            </div>
-          </div>
-        </section>
-
+        </div>
+        <section aria-labelledby="account-title" class="account-section" id="account">
+<div class="section-heading">
+<div>
+<span class="section-kicker">PERFIL</span>
+<h2 id="account-title">Sua conta</h2>
+</div>
+</div>
+<div aria-live="polite" class="account-card" id="account-card">
+<p class="loading-message" id="loading-message">Carregando suas informações...</p>
+<div class="account-details" hidden="" id="account-details">
+<article class="detail-item">
+<span aria-hidden="true" class="detail-icon user-icon">
+<svg fill="none" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.7"></circle>
+<path d="M5 20c.6-3.2 3.1-5 7-5s6.4 1.8 7 5" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path>
+</svg>
+</span>
+<span class="detail-copy">
+<span class="detail-label">Nome de usuário</span>
+<strong id="account-username">—</strong>
+</span>
+</article>
+<article class="detail-item">
+<span aria-hidden="true" class="detail-icon email-icon">
+<svg fill="none" viewbox="0 0 24 24">
+<rect height="14" rx="2" stroke="currentColor" stroke-width="1.7" width="17" x="3.5" y="5"></rect>
+<path d="m4.5 7 7.5 6 7.5-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path>
+</svg>
+</span>
+<span class="detail-copy">
+<span class="detail-label">E-mail</span>
+<strong id="account-email">—</strong>
+</span>
+</article>
+</div>
+</div>
+</section>
         <div class="dashboard-notice" id="dashboard-notice" role="alert" hidden></div>
       </main>
-
-      <footer class="dashboard-footer">© 2026 Nexa · Seu espaço de estudo com IA.</footer>
+      <footer class="dashboard-footer"><span>© 2026 Nexa</span><span>Feito para a sua próxima descoberta.</span></footer>
     </div>
-  </body>
+  </div>
+<dialog class="material-dialog" id="material-dialog" aria-labelledby="material-dialog-title">
+  <header class="material-dialog-heading"><div><span class="section-kicker" id="material-dialog-type">MATERIAL</span><h2 id="material-dialog-title">Seu material</h2></div><button type="button" class="dialog-close" aria-label="Fechar material">×</button></header>
+  <div id="material-dialog-body"></div>
+  <p id="material-dialog-error" class="material-error" role="alert" hidden></p>
+  <footer class="material-dialog-footer"><span>Salvo apenas neste navegador</span><div id="material-dialog-actions"></div></footer>
+</dialog>
+</body>
 </html>
